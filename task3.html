@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+
+        function App() {
+            const [headerData, setHeaderData] = useState('');
+
+            useEffect(() => {
+                postData();
+            }, []);
+
+            async function postData() {
+                try {
+                    const response = await fetch('https://chimpu.xyz/api/post.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'phonenumber=1234567890' // Example phone number
+                    });
+
+                    // Attempt to read a specific header (replace 'Example-Header' with the actual header name)
+                    const exampleHeader = response.headers.get('Example-Header');
+
+                    // Set header data (modify based on the actual header you need to display)
+                    setHeaderData(exampleHeader || 'No header data found');
+                } catch (error) {
+                    console.error('Error:', error);
+                    setHeaderData('Error fetching data');
+                }
+            }
+
+            return (
+                <div>
+                    <h2>Response Header Data:</h2>
+                    <p>{headerData}</p>
+                </div>
+            );
+        }
+
+        // Render the App component
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
